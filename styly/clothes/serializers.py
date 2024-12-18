@@ -50,7 +50,7 @@ class OutfitClothesSerializer(serializers.ModelSerializer):
 
 
 class UserOutfitCreateSerializer(serializers.ModelSerializer):
-    tags = serializers.PrimaryKeyRelatedField(queryset=OutfitTag.objects.all(), many=True)
+    tags = serializers.ListSerializer(child=serializers.CharField())
     clothes = OutfitClothesSerializer(many=True, write_only=True)
 
     class Meta:
@@ -67,7 +67,8 @@ class UserOutfitCreateSerializer(serializers.ModelSerializer):
         clothes_data = validated_data.pop("clothes")
         tags = validated_data.pop("tags")
         outfit = UserOutfit.objects.create(**validated_data)
-        for tag in tags:
+        for tag_name in tags:
+            tag = OutfitTag.objects.get_or_create(name=tag_name)[0]
             outfit.tags.add(tag)
         for clothes in clothes_data:
             OutfitClothes.objects.create(outfit=outfit, **clothes)
