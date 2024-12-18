@@ -102,3 +102,15 @@ class UserOutfitListSerializer(serializers.ModelSerializer):
             "clothes",
             "created_at",
         )
+
+
+class UserClothesCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserClothes
+        fields = (
+            "id",
+            "name",
+            "image",
+            "type",
+        )

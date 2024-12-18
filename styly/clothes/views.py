@@ -1,4 +1,4 @@
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView, CreateAPIView, DestroyAPIView
 from . import serializers
 from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
@@ -64,6 +64,23 @@ class UserClothesListView(ListAPIView):
         return UserClothes.objects.filter(user=self.request.user).order_by("-id").select_related("type")
 
 
+class UserClothesCreateView(CreateAPIView):
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = serializers.UserClothesCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class UserClothesDeleteView(DestroyAPIView):
+    serializer_class = serializers.UserClothesListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return UserClothes.objects.filter(user=self.request.user)
+
+
 class ClothesTypeListView(ListAPIView):
     pagination_class = None
     serializer_class = serializers.ClothesTypeSerializer
@@ -93,3 +110,11 @@ class UserOutfitListView(ListAPIView):
     def get_queryset(self):
         return (UserOutfit.objects.filter(user=self.request.user).order_by("-id").
                 prefetch_related("tags", "clothes__clothes", "clothes__clothes__type"))
+
+
+class UserOutfitDeleteView(DestroyAPIView):
+    serializer_class = serializers.UserOutfitListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return UserOutfit.objects.filter(user=self.request.user)
