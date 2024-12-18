@@ -29,17 +29,29 @@ class Region(models.Model):
 class User(AbstractUser):
     USERNAME_FIELD = "email"
     email = models.EmailField(_("email address"), null=True, unique=True)
-    full_name = models.CharField(_("full name"), max_length=512, blank=True, null=True)
     first_name = models.CharField(_("first name"), max_length=512, blank=True, null=True)
     last_name = models.CharField(_("last name"), max_length=512, blank=True, null=True)
+    REQUIRED_FIELDS = ["username"]
+
+    # profile
+    full_name = models.CharField(_("full name"), max_length=512, blank=True, null=True)
     birth_date = models.DateField(_("birth date"), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_("region"), on_delete=models.SET_NULL, blank=True, null=True)
     gender = models.CharField(_("gender"), max_length=6, choices=GenderChoice.choices, blank=True, null=True)
-    REQUIRED_FIELDS = []
-    
+    age_group = models.CharField(_("age group"), max_length=6, blank=True, null=True)
+    clothing_size = models.CharField(_("clothing size"), max_length=6, blank=True, null=True)
+    height = models.PositiveSmallIntegerField(_("height"), blank=True, null=True)
+    weight = models.PositiveSmallIntegerField(_("weight"), blank=True, null=True)
+    body_shape = models.CharField(_("body shape"), max_length=32, blank=True, null=True)
+    skin_color = models.CharField(_("skin color"), max_length=32, blank=True, null=True)
+    current_styles = models.JSONField(_("current styles"), blank=True, null=True)  # list of style
+
     def get_full_name(self) -> str:
         return str(self.full_name)
 
+    def save(self, *args, **kwargs):
+        self.username = self.email
+        return super().save(*args, **kwargs)
 
 
 class EmailOtp(models.Model):

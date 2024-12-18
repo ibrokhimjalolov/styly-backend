@@ -64,8 +64,32 @@ class RegionSerializer(serializers.ModelSerializer):
         
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    region = RegionSerializer()
-    
+
     class Meta:
         model = User
-        fields = ["id", "email", "full_name", "birth_date", "gender", "region"]
+        fields = [
+            "id", "email", "full_name", "gender",
+            "age_group", "clothing_size", "height",
+            "weight", "body_shape", "current_styles", "skin_color"
+        ]
+
+
+class CheckUserExistsResponseSerializer(serializers.Serializer):
+    exists = serializers.BooleanField()
+
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "full_name",
+            "gender",
+            "age_group",
+            "clothing_size",
+            "height",
+            "weight",
+            "body_shape",
+            "skin_color",
+            "current_styles",
+        ]

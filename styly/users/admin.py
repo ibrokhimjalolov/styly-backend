@@ -43,4 +43,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(EmailOtp)
-admin.site.register(Region)
+# admin.site.register(Region)

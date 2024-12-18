@@ -19,6 +19,7 @@ urlpatterns = [
     path('users/check-user-exists/', views.CheckUserExistsView.as_view(), name='check_user_exists'),
     path('users/register/', views.RegisterView.as_view(), name='register'),
     path("users/profile/", views.ProfileView.as_view(), name="profile"),
-    
-    path("common/regions/", views.RegionListView.as_view(), name="region_list"),
+    path("users/update-profile/", views.UpdateProfileView.as_view(), name="update-profile"),
+
+    # path("common/regions/", views.RegionListView.as_view(), name="region_list"),
 ]

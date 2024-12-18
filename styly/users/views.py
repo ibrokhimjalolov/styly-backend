@@ -1,8 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import User, EmailOtp, Region
-from rest_framework.decorators import action, api_view
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from . import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -12,7 +11,8 @@ from rest_framework.filters import SearchFilter
 
 class CheckUserExistsView(GenericAPIView):
     pagination_class = None
-    
+    serializer_class = serializers.CheckUserExistsResponseSerializer
+
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -29,6 +29,15 @@ class CheckUserExistsView(GenericAPIView):
         else:
             result = {"exists": False}
         return Response(result)
+
+
+class UpdateProfileView(UpdateAPIView):
+    http_method_names = ["patch"]
+    serializer_class = serializers.UpdateProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 class SendOtpView(GenericAPIView):
