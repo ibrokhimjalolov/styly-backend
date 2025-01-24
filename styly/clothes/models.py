@@ -14,7 +14,7 @@ class ClothesType(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class UserClothes(models.Model):
@@ -32,7 +32,7 @@ class UserClothes(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class OutfitTag(models.Model):
@@ -46,7 +46,7 @@ class OutfitTag(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class UserOutfit(models.Model):
@@ -64,7 +64,7 @@ class UserOutfit(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class OutfitClothes(models.Model):
